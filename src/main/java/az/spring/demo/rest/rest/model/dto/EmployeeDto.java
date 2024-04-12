@@ -14,7 +14,6 @@ import javax.validation.constraints.NotBlank;
 public class EmployeeDto {
 
     private long id;
-
     @NotBlank
     private String name;
     @NotBlank

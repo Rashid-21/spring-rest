@@ -9,7 +9,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -35,16 +34,12 @@ public class EmployeeController {
     private final EmployeeService employeeService;
 
 
-    @GetMapping("/admin")
-    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping()
     public EmployeeResponse getAllEmployees() {
         return employeeService.getAllEmployees();
-
-
     }
 
 
-    @PreAuthorize("hasAnyRole('USER','ADMIN')")
     @GetMapping("/{employee-id}")
     @Operation(summary = "This gets employee by id")
     @ApiResponse(description = "ok", responseCode = "200")
@@ -52,7 +47,6 @@ public class EmployeeController {
         return employeeService.getEmployee(employeeId);
     }
 
-    @PreAuthorize("hasAnyRole('USER','ADMIN')")
     @GetMapping("/search")
     public EmployeeResponse getEmployeeByNameAndSurname(
             @RequestParam("name") String name,
@@ -63,24 +57,23 @@ public class EmployeeController {
     }
 
 
-    @PostMapping("/admin")
+    @PostMapping("/save")
     @ResponseStatus(HttpStatus.CREATED)
-    @PreAuthorize("hasRole('ADMIN')")
     public void insert(@Valid @RequestBody EmployeeDto employeeDto) {
         employeeService.insert(employeeDto);
     }
 
-    @PutMapping("/admin/{id}")
+    @PutMapping("/{id}")
     public void updateAll(@RequestBody EmployeeDto employeeDto, @PathVariable("id") long id) {
         employeeService.update(employeeDto, id);
     }
 
-    @PatchMapping("/admin/{id}")
+    @PatchMapping("/{id}")
     public void updateSome(@RequestBody EmployeeDto employeeDto, @PathVariable("id") long id) {
         employeeService.updateSome(employeeDto, id);
     }
 
-    @DeleteMapping("/admin/{id}")
+    @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable("id") long id) {
         employeeService.delete(id);

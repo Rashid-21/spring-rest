@@ -18,4 +18,7 @@ import java.util.List;
 @NoArgsConstructor
 public class EmployeeResponse {
     private List<EmployeeDto> employees;
+
+    private String name;
+    private String surname;
 }

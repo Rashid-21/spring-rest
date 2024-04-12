@@ -24,7 +24,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     public EmployeeResponse getAllEmployees() {
         List<EmployeeDto> employeeDtoList = employeeRepository.findAll()
                 .stream()
-                .map(employee -> convertToDto(employee))
+                .map(this::convertToDto)
                 .collect(Collectors.toList());
 
         return makeEmployeeResponse(employeeDtoList);
@@ -33,7 +33,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public EmployeeDto getEmployee(long id) {
         return employeeRepository.findById(id)
-                .map(employee -> convertToDto(employee))
+                .map(this::convertToDto)
                 .orElseThrow(() -> new CustomNotFoundException(ErrorCodeEnum.EMPLOYEE_NOT_FOUND));
     }
 
@@ -41,11 +41,10 @@ public class EmployeeServiceImpl implements EmployeeService {
     public EmployeeResponse getEmployeeByNameAndSurname(String name, String surname) {
         List<EmployeeDto> employeeList = employeeRepository.findByNameAndSurname(name, surname)
                 .stream()
-                .map(employee -> convertToDto(employee))
+                .map(this::convertToDto)
                 .collect(Collectors.toList());
 
         return makeEmployeeResponse(employeeList);
-
 
     }
 
@@ -98,7 +97,6 @@ public class EmployeeServiceImpl implements EmployeeService {
         return employeeRepository.findById(id).
                 orElseThrow(() -> new CustomNotFoundException(ErrorCodeEnum.EMPLOYEE_NOT_FOUND));
     }
-
 
 
     private EmployeeDto convertToDto(Employee employee) {
