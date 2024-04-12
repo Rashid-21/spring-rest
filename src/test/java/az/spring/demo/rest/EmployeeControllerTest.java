@@ -41,7 +41,7 @@ class EmployeeControllerTest {
     @Test
     void getAllEmployee() throws Exception {
 
-        mockMvc.perform(get("/employees/{employee-id}", 20L))
+        mockMvc.perform(get("/employees", 20L))
                 .andExpect(status().isOk());
     }
 
