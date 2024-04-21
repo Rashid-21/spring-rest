@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 
@@ -15,10 +16,14 @@ import java.util.List;
 @Setter
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor
+//@NoArgsConstructor
+@RequiredArgsConstructor
 public class EmployeeResponse {
     private List<EmployeeDto> employees;
 
-    private String name;
-    private String surname;
+    private final String name;
+    private final String surname;
+
+
+
 }

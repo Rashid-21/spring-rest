@@ -12,7 +12,7 @@ public interface EmployeeService {
 
     EmployeeResponse getEmployeeByNameAndSurname(String name, String surname);
 
-    void insert(EmployeeDto employeeDto);
+    EmployeeDto insert(EmployeeDto employeeDto);
 
     void update(EmployeeDto employeeDto, long id);
 

@@ -54,10 +54,12 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 
     @Override
-    public void insert(EmployeeDto employeeDto) {
+    public EmployeeDto insert(EmployeeDto employeeDto) {
         Employee employee = employeeMapper.employeeDtoToEmployee(employeeDto);
-        employeeRepository.save(employee);
+        Employee savedEmployee = employeeRepository.save(employee);
+        return employeeMapper.employeeToEmployeeDto(savedEmployee);
     }
+
 
     @Override
     public void update(EmployeeDto employeeDto, long id) {
