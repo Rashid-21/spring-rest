@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.nio.file.AccessDeniedException;
+import java.util.Objects;
 
 @RestControllerAdvice
 public class ExceptionHandlerController {
@@ -43,7 +44,7 @@ public class ExceptionHandlerController {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleValidation(MethodArgumentNotValidException e) {
 
-        String fieldName = e.getBindingResult().getFieldError().getField();
+        String fieldName = Objects.requireNonNull(e.getBindingResult().getFieldError()).getField();
 
         return ErrorResponse.builder()
                 .code(ErrorCodeEnum.VALIDATION_ERROR.getCode())
@@ -65,7 +66,7 @@ public class ExceptionHandlerController {
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorResponse handleUnknown(Exception e) {
-        e.printStackTrace();
+
         return ErrorResponse.builder()
                 .code(ErrorCodeEnum.UNKNOWN_ERROR.getCode())
                 .message(ErrorCodeEnum.UNKNOWN_ERROR.getMessage())

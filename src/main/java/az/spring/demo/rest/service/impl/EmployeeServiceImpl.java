@@ -1,5 +1,6 @@
 package az.spring.demo.rest.service.impl;
 
+import az.spring.demo.rest.mapper.EmployeeMapper;
 import az.spring.demo.rest.model.enums.ErrorCodeEnum;
 import az.spring.demo.rest.exception.CustomNotFoundException;
 import az.spring.demo.rest.model.Employee;
@@ -7,7 +8,7 @@ import az.spring.demo.rest.repository.EmployeeRepository;
 import az.spring.demo.rest.rest.model.dto.EmployeeDto;
 import az.spring.demo.rest.rest.model.response.EmployeeResponse;
 import az.spring.demo.rest.service.EmployeeService;
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
@@ -15,17 +16,20 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class EmployeeServiceImpl implements EmployeeService {
 
     private final EmployeeRepository employeeRepository;
+
+    private final EmployeeMapper employeeMapper;
 
     @Override
     public EmployeeResponse getAllEmployees() {
         List<EmployeeDto> employeeDtoList = employeeRepository.findAll()
                 .stream()
-                .map(this::convertToDto)
+                .map(employeeMapper::employeeToEmployeeDto)
                 .collect(Collectors.toList());
+//        this::convertToDto
 
         return makeEmployeeResponse(employeeDtoList);
     }
@@ -33,7 +37,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public EmployeeDto getEmployee(long id) {
         return employeeRepository.findById(id)
-                .map(this::convertToDto)
+                .map(employeeMapper::employeeToEmployeeDto)
                 .orElseThrow(() -> new CustomNotFoundException(ErrorCodeEnum.EMPLOYEE_NOT_FOUND));
     }
 
@@ -41,7 +45,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     public EmployeeResponse getEmployeeByNameAndSurname(String name, String surname) {
         List<EmployeeDto> employeeList = employeeRepository.findByNameAndSurname(name, surname)
                 .stream()
-                .map(this::convertToDto)
+                .map(employeeMapper::employeeToEmployeeDto)
                 .collect(Collectors.toList());
 
         return makeEmployeeResponse(employeeList);
@@ -51,8 +55,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public void insert(EmployeeDto employeeDto) {
-        Employee employee = new Employee();
-        BeanUtils.copyProperties(employeeDto, employee);
+        Employee employee = employeeMapper.employeeDtoToEmployee(employeeDto);
         employeeRepository.save(employee);
     }
 
@@ -63,6 +66,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         employee.setSurname(employeeDto.getSurname());
         employee.setAge(employeeDto.getAge());
         employee.setSalary(employeeDto.getSalary());
+
 
         employeeRepository.save(employee);
     }
@@ -98,12 +102,6 @@ public class EmployeeServiceImpl implements EmployeeService {
                 orElseThrow(() -> new CustomNotFoundException(ErrorCodeEnum.EMPLOYEE_NOT_FOUND));
     }
 
-
-    private EmployeeDto convertToDto(Employee employee) {
-        EmployeeDto employeeDto = new EmployeeDto();
-        BeanUtils.copyProperties(employee, employeeDto);
-        return employeeDto;
-    }
 
     private EmployeeResponse makeEmployeeResponse(List<EmployeeDto> employees) {
         return EmployeeResponse.builder().

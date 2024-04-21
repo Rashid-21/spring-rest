@@ -2,7 +2,7 @@ package az.spring.demo.rest.service;
 
 import az.spring.demo.rest.rest.model.dto.EmployeeDto;
 import az.spring.demo.rest.rest.model.response.EmployeeResponse;
-
+import org.springframework.stereotype.Service;
 
 public interface EmployeeService {
 
