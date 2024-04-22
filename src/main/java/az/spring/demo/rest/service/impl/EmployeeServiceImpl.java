@@ -9,7 +9,6 @@ import az.spring.demo.rest.rest.model.dto.EmployeeDto;
 import az.spring.demo.rest.rest.model.response.EmployeeResponse;
 import az.spring.demo.rest.service.EmployeeService;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,7 +28,6 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .stream()
                 .map(employeeMapper::employeeToEmployeeDto)
                 .collect(Collectors.toList());
-//        this::convertToDto
 
         return makeEmployeeResponse(employeeDtoList);
     }

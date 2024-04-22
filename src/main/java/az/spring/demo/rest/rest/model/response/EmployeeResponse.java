@@ -5,7 +5,6 @@ import az.spring.demo.rest.rest.model.dto.EmployeeDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
@@ -23,7 +22,6 @@ public class EmployeeResponse {
 
     private final String name;
     private final String surname;
-
 
 
 }

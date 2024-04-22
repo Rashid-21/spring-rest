@@ -58,7 +58,6 @@ public class EmployeeControllerTest {
         long id = 1L;
         EmployeeDto employee = new EmployeeDto(id, "test", "test", 23, 1200);
 
-        // TODO: 4/21/2024 thenReturn
         when(employeeService.getEmployee(id)).thenReturn(employee);
 
         mockMvc.perform(get("/employees/{employee-id}", id)
